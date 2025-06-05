@@ -14,7 +14,21 @@ This program displays a looping animation of a stick figure walking, using termi
 - Designed for 80x24 terminal size
 - Hidden cursor during animation for better viewing experience
 
-## Building
+## Quick Start
+
+### Run with Docker (Easiest)
+
+No installation required! Just run directly from Docker Hub:
+
+```bash
+docker run -it drewstreib/stickman
+```
+
+This works on any system with Docker installed (Linux, macOS, Windows) and supports both x86_64 and ARM64 architectures.
+
+Press `Ctrl+C` to stop the animation.
+
+## Building from Source
 
 ### Requirements
 
@@ -57,16 +71,22 @@ To create your own animation:
 
 ## Docker
 
-### Building the Docker Image
+### Running from Docker Hub
 
-```bash
-docker build -t drewstreib/stickman .
-```
-
-### Running in Docker
+The easiest way to run the animation:
 
 ```bash
 docker run -it drewstreib/stickman
+```
+
+Available for multiple architectures:
+- `linux/amd64` (Intel/AMD x86_64)
+- `linux/arm64` (ARM64/Apple Silicon)
+
+### Building the Docker Image Locally
+
+```bash
+docker build -t drewstreib/stickman .
 ```
 
 ### Multi-architecture Build
@@ -78,7 +98,7 @@ docker buildx create --use
 docker buildx build --platform linux/amd64,linux/arm64 -t drewstreib/stickman .
 ```
 
-To push to Docker Hub (when ready):
+To push to Docker Hub:
 ```bash
 docker buildx build --platform linux/amd64,linux/arm64 -t drewstreib/stickman --push .
 ```
