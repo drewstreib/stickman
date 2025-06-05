@@ -4,7 +4,7 @@ FROM gcc:latest AS builder
 WORKDIR /app
 
 # Copy source files
-COPY stickman.c Makefile ./
+COPY stickman.c stickman.h Makefile ./
 
 # Build the application
 RUN make

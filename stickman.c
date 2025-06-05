@@ -1,3 +1,5 @@
+#define _GNU_SOURCE
+
 #include "stickman.h"
 
 #include <signal.h>

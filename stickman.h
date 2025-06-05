@@ -11,7 +11,7 @@
 /* Animation settings */
 #define ANIMATION_DELAY 100000 /* microseconds */
 #define MAX_FRAMES      20
-#define MAX_FILENAME_LENGTH 256
+#define MAX_FILENAME_LENGTH 512
 #define ANIMATION_DIR   "anim"
 
 /* Frame structure */
