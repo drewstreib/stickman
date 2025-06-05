@@ -103,6 +103,35 @@ To push to Docker Hub:
 docker buildx build --platform linux/amd64,linux/arm64 -t drewstreib/stickman --push .
 ```
 
+## Testing
+
+The project includes unit tests to ensure code quality and provide a foundation for future development.
+
+### Running Tests
+
+```bash
+make test
+```
+
+### Test Coverage
+
+Current tests cover:
+- Frame loading functionality
+- Filename comparison and sorting
+- Data structure constraints
+- Basic error handling
+
+**Note:** These tests are somewhat perfunctory for the current simple functionality, but establish good practices for code quality and provide a foundation for testing as the project expands.
+
+### Development Workflow
+
+Run all quality checks including tests:
+```bash
+make verify
+```
+
+This runs formatting, linting, static analysis, and unit tests.
+
 ## Technical Details
 
 - Uses ANSI escape sequences for terminal control

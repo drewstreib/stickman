@@ -1,5 +1,6 @@
 # Compiled executables
 stickman
+tests/test_stickman
 *.exe
 
 # Object files
@@ -48,3 +49,6 @@ coverage/
 
 # clang-format backup files
 *.orig
+
+# Test artifacts
+test_anim/

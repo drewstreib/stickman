@@ -24,6 +24,13 @@ SOURCES = stickman.c
 OBJECTS = $(SOURCES:.c=.o)
 DEPS = $(SOURCES:.c=.d)
 
+# Test structure
+TEST_DIR = tests
+TEST_TARGET = $(TEST_DIR)/test_stickman
+TEST_SOURCES = $(TEST_DIR)/test_stickman.c stickman.c
+TEST_OBJECTS = $(TEST_SOURCES:.c=.o)
+TEST_CFLAGS = $(CFLAGS) -DTESTING
+
 # Default target
 .PHONY: all
 all: release
@@ -86,7 +93,7 @@ check:
 
 # Run all checks
 .PHONY: verify
-verify: format lint check
+verify: format lint check test
 
 # Memory check with valgrind (if available on macOS)
 .PHONY: memcheck
@@ -99,11 +106,28 @@ memcheck: debug
 		leaks --atExit -- ./$(TARGET); \
 	fi
 
+# Test targets
+.PHONY: test
+test: $(TEST_TARGET)
+	@echo "Running unit tests..."
+	./$(TEST_TARGET)
+
+$(TEST_TARGET): $(TEST_DIR)/test_stickman.o stickman_test.o
+	$(CC) $(TEST_CFLAGS) -o $@ $^
+
+$(TEST_DIR)/test_stickman.o: $(TEST_DIR)/test_stickman.c stickman.h stickman_internal.h
+	$(CC) $(TEST_CFLAGS) -MMD -MP -c $< -o $@
+
+stickman_test.o: stickman.c stickman.h
+	$(CC) $(TEST_CFLAGS) -MMD -MP -c $< -o $@
+
 # Clean build artifacts
 .PHONY: clean
 clean:
 	rm -f $(TARGET) $(OBJECTS) $(DEPS)
+	rm -f $(TEST_TARGET) $(TEST_DIR)/*.o $(TEST_DIR)/*.d stickman_test.o stickman_test.d
 	rm -rf *.dSYM
+	rm -rf test_anim
 
 # Install (optional)
 .PHONY: install
@@ -125,10 +149,11 @@ help:
 	@echo "  release  - Build optimized version"
 	@echo "  debug    - Build debug version with symbols"
 	@echo "  run      - Build and run the program"
+	@echo "  test     - Build and run unit tests"
 	@echo "  format   - Format code with clang-format"
 	@echo "  lint     - Run clang-tidy static analysis"
 	@echo "  check    - Run cppcheck static analysis"
-	@echo "  verify   - Run format, lint, and check"
+	@echo "  verify   - Run format, lint, check, and test"
 	@echo "  memcheck - Check for memory leaks"
 	@echo "  clean    - Remove build artifacts"
 	@echo "  install  - Install to /usr/local/bin"

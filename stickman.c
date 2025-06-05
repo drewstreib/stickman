@@ -1,6 +1,9 @@
 #define _GNU_SOURCE
 
 #include "stickman.h"
+#ifdef TESTING
+#include "stickman_internal.h"
+#endif
 
 #include <signal.h>
 #include <stdbool.h>
@@ -75,7 +78,11 @@ static void cleanup(void)
 }
 
 /* Frame loading function */
+#ifdef TESTING
+int load_frame(const char* filename, Frame* frame)
+#else
 static int load_frame(const char* filename, Frame* frame)
+#endif
 {
     FILE* file = fopen(filename, "r");
     if (!file) {
@@ -134,7 +141,11 @@ static void display_frame(const Frame* current, const Frame* previous)
 }
 
 /* Filename comparison for sorting */
+#ifdef TESTING
+int compare_filenames(const void* a, const void* b)
+#else
 static int compare_filenames(const void* a, const void* b)
+#endif
 {
     const char* const* str_a = (const char* const*)a;
     const char* const* str_b = (const char* const*)b;
@@ -221,7 +232,11 @@ static void print_usage(const char* program_name)
 }
 
 /* Main function */
+#ifndef TESTING
 int main(int argc, char* argv[])
+#else
+int stickman_main(int argc, char* argv[])
+#endif
 {
     /* Parse command line arguments */
     for (int i = 1; i < argc; i++) {
