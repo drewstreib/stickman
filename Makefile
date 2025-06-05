@@ -129,6 +129,24 @@ clean:
 	rm -rf *.dSYM
 	rm -rf test_anim
 
+# Git hooks management
+.PHONY: setup-hooks
+setup-hooks:
+	@echo "Setting up git pre-commit hooks..."
+	@./setup-hooks.sh
+
+.PHONY: remove-hooks
+remove-hooks:
+	@echo "Removing git hooks..."
+	@rm -f .git/hooks/pre-commit
+	@git config --unset core.hooksPath || true
+	@echo "Git hooks removed"
+
+.PHONY: test-hooks
+test-hooks:
+	@echo "Testing pre-commit hook..."
+	@./.githooks/pre-commit
+
 # Install (optional)
 .PHONY: install
 install: release
@@ -155,6 +173,9 @@ help:
 	@echo "  check    - Run cppcheck static analysis"
 	@echo "  verify   - Run format, lint, check, and test"
 	@echo "  memcheck - Check for memory leaks"
+	@echo "  setup-hooks - Install git pre-commit hooks"
+	@echo "  remove-hooks - Remove git pre-commit hooks"
+	@echo "  test-hooks - Test pre-commit hook manually"
 	@echo "  clean    - Remove build artifacts"
 	@echo "  install  - Install to /usr/local/bin"
 	@echo "  help     - Show this help message"

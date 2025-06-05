@@ -5,14 +5,14 @@
 #include <stdlib.h>
 
 /* Terminal dimensions */
-#define TERMINAL_WIDTH  80
+#define TERMINAL_WIDTH 80
 #define TERMINAL_HEIGHT 24
 
 /* Animation settings */
 #define ANIMATION_DELAY 100000 /* microseconds */
-#define MAX_FRAMES      20
+#define MAX_FRAMES 20
 #define MAX_FILENAME_LENGTH 512
-#define ANIMATION_DIR   "anim"
+#define ANIMATION_DIR "anim"
 
 /* Frame structure */
 typedef struct {

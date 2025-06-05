@@ -145,10 +145,31 @@ Current tests cover:
 ### Development Workflow
 
 ```bash
-make verify   # Run all quality checks (format, lint, test)
-make format   # Format code with clang-format
-make lint     # Run clang-tidy static analysis
-make check    # Run cppcheck static analysis
+make verify      # Run all quality checks (format, lint, test)
+make format      # Format code with clang-format
+make lint        # Run clang-tidy static analysis
+make check       # Run cppcheck static analysis
+make setup-hooks # Install git pre-commit hooks (recommended)
+```
+
+### Pre-commit Hooks
+
+The project includes git pre-commit hooks that automatically run quality checks before each commit:
+
+```bash
+make setup-hooks    # Install pre-commit hooks
+make test-hooks     # Test hooks manually
+make remove-hooks   # Remove pre-commit hooks
+```
+
+The pre-commit hook will automatically check:
+- **Code formatting** (clang-format)
+- **Static analysis** (clang-tidy, cppcheck)
+- **Unit tests** (all tests must pass)
+
+If any check fails, the commit will be blocked until issues are fixed. To bypass (not recommended):
+```bash
+git commit --no-verify
 ```
 
 ## Technical Details
@@ -196,10 +217,19 @@ This project follows modern C development practices:
 1. **Code style:** Enforced by clang-format
 2. **Static analysis:** clang-tidy and cppcheck integration
 3. **Testing:** Unit tests with custom lightweight framework
-4. **Documentation:** Comprehensive inline and external docs
-5. **CI/CD:** Multi-architecture Docker builds
+4. **Pre-commit hooks:** Automatic quality checks before commits
+5. **Documentation:** Comprehensive inline and external docs
+6. **CI/CD:** Multi-architecture Docker builds
 
-Pull requests welcome! Please ensure `make verify` passes.
+**Getting started with development:**
+```bash
+git clone https://github.com/drewstreib/stickman.git
+cd stickman
+make setup-hooks  # Install pre-commit hooks
+make verify       # Run all quality checks
+```
+
+Pull requests welcome! Please ensure `make verify` passes and hooks are installed.
 
 ## License
 
