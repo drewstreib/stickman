@@ -1,0 +1,50 @@
+# Compiled executables
+stickman
+*.exe
+
+# Object files
+*.o
+*.obj
+
+# Libraries
+*.a
+*.lib
+*.so
+*.dylib
+
+# Debug files
+*.dSYM/
+*.pdb
+
+# Dependency files
+*.d
+
+# Editor/IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Build directories
+build/
+bin/
+obj/
+
+# Core dumps
+core
+core.*
+
+# Valgrind files
+*.valgrind
+vgcore.*
+
+# Coverage files
+*.gcov
+*.gcda
+*.gcno
+coverage/
+
+# clang-format backup files
+*.orig

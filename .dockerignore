@@ -1,0 +1,13 @@
+# Ignore build artifacts
+stickman
+*.o
+
+# Ignore git files
+.git
+.gitignore
+
+# Ignore documentation
+README.md
+
+# Ignore OS files
+.DS_Store
