@@ -8,11 +8,14 @@ This program displays a looping animation of a stick figure walking, using termi
 
 ## Features
 
-- Smooth animation using terminal control sequences (no screen clearing)
-- Customizable animation frames stored as text files
-- Supports up to 20 animation frames
-- Designed for 80x24 terminal size
-- Hidden cursor during animation for better viewing experience
+- **Smooth animation** using terminal control sequences (no screen clearing)
+- **Customizable animation frames** stored as text files
+- **Cross-platform** support via Docker (Linux, macOS, Windows)
+- **Multi-architecture** Docker images (x86_64 and ARM64)
+- **Professional C codebase** with comprehensive tooling
+- **Unit testing framework** with 7 test cases
+- **Signal handling** for graceful exit (Ctrl+C)
+- **Command line options** (-h, -v flags)
 
 ## Quick Start
 
@@ -24,7 +27,15 @@ No installation required! Just run directly from Docker Hub:
 docker run -it drewstreib/stickman
 ```
 
-This works on any system with Docker installed (Linux, macOS, Windows) and supports both x86_64 and ARM64 architectures.
+**Version-specific tags available:**
+```bash
+docker run -it drewstreib/stickman:v1.0.0  # Specific version
+docker run -it drewstreib/stickman:v1.0    # Minor version
+docker run -it drewstreib/stickman:v1      # Major version  
+docker run -it drewstreib/stickman:latest  # Latest release
+```
+
+This works on any system with Docker installed and supports both x86_64 and ARM64 architectures.
 
 Press `Ctrl+C` to stop the animation.
 
@@ -32,29 +43,36 @@ Press `Ctrl+C` to stop the animation.
 
 ### Requirements
 
-- GCC compiler
-- POSIX-compliant system (macOS, Linux)
+- **GCC compiler** with C11 support
+- **POSIX-compliant system** (macOS, Linux)
+- **Optional tools:** clang-format, clang-tidy, cppcheck (for development)
 
-### Compilation
+### Quick Build
 
 ```bash
 make
 ```
 
-To clean build artifacts:
+### Development Build
+
 ```bash
-make clean
+make debug    # Build with debug symbols
+make verify   # Run all quality checks (format, lint, test)
+```
+
+### Available Make Targets
+
+```bash
+make help     # Show all available targets
 ```
 
 ## Running
 
 ```bash
-make run
-```
-
-Or directly:
-```bash
-./stickman
+make run      # Build and run
+./stickman    # Run directly
+./stickman -h # Show help
+./stickman -v # Show version
 ```
 
 Press `Ctrl+C` to stop the animation.
@@ -79,7 +97,7 @@ The easiest way to run the animation:
 docker run -it drewstreib/stickman
 ```
 
-Available for multiple architectures:
+**Available architectures:**
 - `linux/amd64` (Intel/AMD x86_64)
 - `linux/arm64` (ARM64/Apple Silicon)
 
@@ -91,21 +109,21 @@ docker build -t drewstreib/stickman .
 
 ### Multi-architecture Build
 
-For building multi-architecture images (amd64 and arm64):
+For building multi-architecture images:
 
+```bash
+./build-multiarch.sh
+```
+
+Or manually:
 ```bash
 docker buildx create --use
 docker buildx build --platform linux/amd64,linux/arm64 -t drewstreib/stickman .
 ```
 
-To push to Docker Hub:
-```bash
-docker buildx build --platform linux/amd64,linux/arm64 -t drewstreib/stickman --push .
-```
-
 ## Testing
 
-The project includes unit tests to ensure code quality and provide a foundation for future development.
+The project includes a comprehensive unit testing framework to ensure code quality.
 
 ### Running Tests
 
@@ -116,48 +134,86 @@ make test
 ### Test Coverage
 
 Current tests cover:
-- Frame loading functionality
-- Filename comparison and sorting
-- Data structure constraints
-- Basic error handling
+- **Frame loading functionality** (basic, empty, nonexistent files)
+- **Filename comparison and sorting** algorithms
+- **Data structure constraints** and validation
+- **Constants sanity checks** and bounds
+- **Basic error handling** scenarios
 
 **Note:** These tests are somewhat perfunctory for the current simple functionality, but establish good practices for code quality and provide a foundation for testing as the project expands.
 
 ### Development Workflow
 
-Run all quality checks including tests:
 ```bash
-make verify
+make verify   # Run all quality checks (format, lint, test)
+make format   # Format code with clang-format
+make lint     # Run clang-tidy static analysis
+make check    # Run cppcheck static analysis
 ```
-
-This runs formatting, linting, static analysis, and unit tests.
 
 ## Technical Details
 
-- Uses ANSI escape sequences for terminal control
-- Implements differential rendering (only updates changed characters)
-- Animation delay: 100ms between frames
-- Automatically sorts animation files alphabetically
-- Handles up to 20 frames maximum
+- **Language:** C11 with GNU extensions
+- **Terminal control:** ANSI escape sequences
+- **Rendering:** Differential updates (only changes characters that differ)
+- **Animation timing:** 100ms between frames (configurable)
+- **File handling:** Robust loading with multiple line ending support
+- **Memory management:** Proper allocation/deallocation with cleanup
+- **Signal handling:** Graceful shutdown on SIGINT/SIGTERM
+- **Architecture:** Modular design with separation of concerns
 
-## File Structure
+## Project Structure
 
 ```
 stickman/
-├── stickman.c       # Main program source
-├── Makefile         # Build configuration
-├── README.md        # This file
-├── Dockerfile       # Container configuration
-└── anim/           # Animation frames directory
-    ├── frame01.txt
-    ├── frame02.txt
-    ├── frame03.txt
-    ├── frame04.txt
-    ├── frame05.txt
-    ├── frame06.txt
-    └── frame07.txt
+├── stickman.c              # Main program source
+├── stickman.h              # Public header
+├── stickman_internal.h     # Internal functions (testing)
+├── Makefile                # Comprehensive build system
+├── README.md               # This documentation
+├── LICENSE                 # MIT License
+├── Dockerfile              # Multi-stage container build
+├── .clang-format          # Code formatting rules
+├── .gitignore             # Git ignore patterns
+├── .dockerignore          # Docker ignore patterns
+├── build-multiarch.sh     # Multi-architecture build script
+├── tests/                 # Unit testing framework
+│   └── test_stickman.c    # Test suite (7 test cases)
+└── anim/                  # Animation frames directory
+    ├── frame01.txt        # Walking animation frame 1
+    ├── frame02.txt        # Walking animation frame 2
+    ├── frame03.txt        # Walking animation frame 3
+    ├── frame04.txt        # Walking animation frame 4
+    ├── frame05.txt        # Walking animation frame 5
+    ├── frame06.txt        # Walking animation frame 6
+    └── frame07.txt        # Walking animation frame 7
 ```
+
+## Contributing
+
+This project follows modern C development practices:
+
+1. **Code style:** Enforced by clang-format
+2. **Static analysis:** clang-tidy and cppcheck integration
+3. **Testing:** Unit tests with custom lightweight framework
+4. **Documentation:** Comprehensive inline and external docs
+5. **CI/CD:** Multi-architecture Docker builds
+
+Pull requests welcome! Please ensure `make verify` passes.
+
+## License
+
+MIT License - see [LICENSE](LICENSE) file for details.
+
+## Version
+
+Current version: **v1.0.0**
 
 ## Author
 
-Created by drewstreib
+Created by [drewstreib](https://github.com/drewstreib)
+
+---
+
+**Repository:** https://github.com/drewstreib/stickman  
+**Docker Hub:** https://hub.docker.com/r/drewstreib/stickman
